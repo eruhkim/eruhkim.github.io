@@ -1,7 +1,7 @@
 ---
 title: CloudWatch 에이전트를 붙였더니 Elastic Beanstalk 로그 스트리밍이 멈췄다 – fetch-config, append-config, 그리고 배포와의 경합
 description: Elastic Beanstalk 인스턴스에 SSM으로 CloudWatch 에이전트를 설정해 메모리·디스크 지표를 모으려다, EB 로그 스트리밍이 끊기고 나중에는 배포까지 실패했다. EB도 같은 에이전트를 쓰기 때문이었다.
-pubDate: 2026-11-13
+pubDate: 2026-11-09
 tags: [aws, elastic-beanstalk, cloudwatch, ssm]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: www 리다이렉트용 S3 버킷 없애기 – CloudFront Function 하나로 정리
 description: 정적 사이트의 www → apex 리다이렉트를 S3 웹사이트 버킷 대신 CloudFront Function으로 옮기고, index.html 붙이기까지 한 함수에서 처리한 기록.
-pubDate: 2026-11-12
+pubDate: 2026-11-02
 tags: [aws, cloudfront, s3]
 ---
 

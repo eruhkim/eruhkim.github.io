@@ -1,7 +1,7 @@
 ---
 title: CloudWatch 알림이 오면 Claude가 1차 분석하게 만들기 – Claude Code 예약 작업 API 트리거 + 읽기 전용 조사 API
 description: Slack으로 가는 CloudWatch 알림 Lambda에서 Claude Code 클라우드 예약 작업을 API로 띄우고, AWS 키 없이 읽기 전용 조사 API로 원인을 찾아 분석 결과를 다시 Slack 채널에 올리게 했다. 설계와 시험하면서 막힌 곳을 정리했다.
-pubDate: 2026-11-12
+pubDate: 2026-11-06
 tags: [aws, claude-code, cloudwatch, lambda, api-gateway, slack]
 ---
 

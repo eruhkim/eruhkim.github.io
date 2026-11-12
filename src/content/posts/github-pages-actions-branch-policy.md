@@ -1,7 +1,7 @@
 ---
 title: GitHub Pages를 Actions 배포로 바꿨더니 deploy만 실패했다 – github-pages 환경의 브랜치 규칙
 description: 브랜치 빌드(legacy)에서 GitHub Actions 배포로 바꾸고 기본 브랜치를 master에서 main으로 옮겼더니, 빌드는 성공하고 deploy 단계만 실패했다. 원인은 github-pages 환경의 배포 브랜치 규칙이었다.
-pubDate: 2026-11-12
+pubDate: 2026-11-04
 tags: [github, github-actions, github-pages]
 ---
 
