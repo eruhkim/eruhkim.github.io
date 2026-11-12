@@ -11,12 +11,12 @@ const { title, description, pubDate, updatedDate, tags, draft } = Astro.props;
 <Base title={title} description={description} type="article">
 	<article>
 		<header class="post-head">
-			<h1>{title}</h1>
 			<p class="meta">
 				<FormattedDate date={pubDate} />
-				{updatedDate && <span>· 수정 <FormattedDate date={updatedDate} /></span>}
+				{updatedDate && <span class="updated">수정 <FormattedDate date={updatedDate} /></span>}
 				{draft && <span class="draft">초안</span>}
 			</p>
+			<h1>{title}</h1>
 			{tags.length > 0 && (
 				<p class="tags">
 					{tags.map((tag) => <a href={tagUrl(tag)}>#{tag}</a>)}
@@ -32,47 +32,61 @@ const { title, description, pubDate, updatedDate, tags, draft } = Astro.props;
 
 <style>
 	.post-head {
-		margin-bottom: 2.25rem;
+		margin-bottom: 44px;
+		padding-bottom: 28px;
+		border-bottom: 1px solid var(--line);
 	}
 	h1 {
-		font-size: 1.85rem;
-		line-height: 1.35;
-		margin: 0 0 0.6rem;
-		word-break: keep-all;
+		font-size: 34px;
+		line-height: 1.3;
+		letter-spacing: -0.03em;
 	}
 	.meta {
-		color: var(--muted);
-		font-size: 0.9rem;
-		margin: 0;
 		display: flex;
-		gap: 0.4rem;
 		flex-wrap: wrap;
+		align-items: center;
+		gap: 10px;
+		margin: 0 0 12px;
+		color: var(--accent);
+		font-size: 13.5px;
+		font-weight: 600;
 		font-variant-numeric: tabular-nums;
 	}
+	.updated {
+		color: var(--muted);
+		font-weight: 400;
+	}
+	.draft {
+		padding: 1px 6px;
+		border-radius: 4px;
+		background: var(--accent-soft);
+		color: var(--accent);
+		font-size: 11.5px;
+	}
 	.tags {
-		margin: 0.5rem 0 0;
 		display: flex;
-		gap: 0.6rem;
 		flex-wrap: wrap;
-		font-size: 0.875rem;
+		gap: 12px;
+		margin: 14px 0 0;
+		font-size: 13.5px;
 	}
 	.tags a {
+		color: var(--muted);
+	}
+	.tags a:hover {
 		color: var(--accent);
 		text-decoration: none;
 	}
-	.draft {
-		font-size: 0.75rem;
-		padding: 0.05rem 0.4rem;
-		border-radius: 4px;
-		background: var(--warn-bg);
-		color: var(--warn-fg);
-	}
 	.back {
-		margin-top: 3rem;
-		font-size: 0.925rem;
+		margin: 56px 0 0;
+		font-size: 14px;
 	}
 	.back a {
 		color: var(--muted);
-		text-decoration: none;
+	}
+	@media (max-width: 640px) {
+		h1 {
+			font-size: 26px;
+		}
 	}
 </style>

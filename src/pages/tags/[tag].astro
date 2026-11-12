@@ -18,21 +18,17 @@ const { posts } = Astro.props as { posts: Post[] };
 
 <Base title={`#${tag}`} description={`#${tag} 태그가 붙은 글`}>
 	<h1>#{tag}</h1>
+	<h2 class="section">글 {posts.length}개</h2>
 	<PostList posts={posts} />
 	<p class="all"><a href="/tags/">모든 태그 →</a></p>
 </Base>
 
 <style>
-	h1 {
-		font-size: 1.5rem;
-		margin: 0 0 1rem;
-	}
 	.all {
-		margin-top: 2rem;
-		font-size: 0.925rem;
+		margin-top: 40px;
+		font-size: 14px;
 	}
 	.all a {
 		color: var(--muted);
-		text-decoration: none;
 	}
 </style>

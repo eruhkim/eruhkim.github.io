@@ -1,42 +1,24 @@
+/* Shared look with eruhkim.net (site/style.css): same palette, type, nav, footer */
 :root {
-	--max: 46rem;
-	--bg: #ffffff;
-	--fg: #1b1f24;
-	--text: #2b3138;
-	--muted: #6a737d;
-	--line: #e6e8eb;
-	--accent: #1f4fd8;
-	--code-bg: #f4f5f7;
-	--quote: #d0d7de;
-	--warn-bg: #fff4d6;
-	--warn-fg: #7a5200;
-	--font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR',
-		'Malgun Gothic', system-ui, sans-serif;
+	--bg: #fbfbfa;
+	--paper: #ffffff;
+	--ink: #1d1d1f;
+	--text: #36363a;
+	--muted: #76767c;
+	--faint: #a1a1a6;
+	--line: #e7e7e4;
+	--accent: #24519d;
+	--accent-soft: #eef3fb;
+	--date-col: 7.5rem;
 	--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'D2Coding', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--bg: #0f1216;
-		--fg: #eef1f4;
-		--text: #d2d7dd;
-		--muted: #8b949e;
-		--line: #262b31;
-		--accent: #7aa2ff;
-		--code-bg: #171b21;
-		--quote: #3a414a;
-		--warn-bg: #3a2f12;
-		--warn-fg: #f2cc60;
-	}
-}
-
-*,
-*::before,
-*::after {
+* {
 	box-sizing: border-box;
 }
 
 html {
+	scroll-behavior: smooth;
 	-webkit-text-size-adjust: 100%;
 }
 
@@ -44,126 +26,254 @@ body {
 	margin: 0;
 	background: var(--bg);
 	color: var(--text);
-	font-family: var(--font-sans);
-	font-size: 17px;
-	line-height: 1.75;
+	font-family:
+		'Pretendard Variable',
+		Pretendard,
+		-apple-system,
+		BlinkMacSystemFont,
+		'Apple SD Gothic Neo',
+		'Noto Sans KR',
+		'Segoe UI',
+		Arial,
+		sans-serif;
+	font-size: 15.5px;
+	line-height: 1.65;
+	word-break: keep-all;
 	overflow-wrap: break-word;
+	-webkit-font-smoothing: antialiased;
 }
 
 main {
-	max-width: var(--max);
+	max-width: 880px;
 	margin: 0 auto;
-	padding: 2.5rem 1rem 0;
+	padding: 72px 32px 40px;
 }
 
+/* Links */
 a {
 	color: var(--accent);
+	text-decoration: none;
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1px;
+}
+a:hover {
+	text-decoration: underline;
 }
 
-h1,
-h2,
-h3,
-h4 {
-	color: var(--fg);
-	line-height: 1.4;
-	word-break: keep-all;
+/* Page title (same as eruhkim.net profile heading) */
+h1 {
+	margin: 0 0 14px;
+	color: var(--ink);
+	font-size: 40px;
+	line-height: 1.15;
+	font-weight: 700;
+	letter-spacing: -0.035em;
+}
+
+/* Lead paragraph with accent bar (eruhkim.net intro) */
+.lead {
+	max-width: 70ch;
+	margin: 26px 0 0;
+	padding-left: 18px;
+	border-left: 2px solid var(--accent);
+	color: var(--text);
+	font-size: 16.5px;
+	line-height: 1.8;
+}
+
+/* Section heading: small accent label with a rule */
+.section {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin: 72px 0 26px;
+	color: var(--accent);
+	font-size: 15px;
+	line-height: 1.3;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+.section::after {
+	content: '';
+	flex: 1;
+	height: 1px;
+	background: var(--line);
 }
 
 /* Post body */
-.prose h1 {
-	font-size: 1.6rem;
-	margin: 0 0 1.25rem;
-}
-.prose h2 {
-	font-size: 1.35rem;
-	margin: 2.5rem 0 0.75rem;
-	padding-bottom: 0.3rem;
-	border-bottom: 1px solid var(--line);
-}
-.prose h3 {
-	font-size: 1.12rem;
-	margin: 2rem 0 0.5rem;
+.prose {
+	font-size: 16px;
+	line-height: 1.85;
 }
 .prose p,
 .prose ul,
 .prose ol,
-.prose table,
 .prose pre,
+.prose blockquote,
+.prose table {
+	margin: 0 0 18px;
+}
+.prose p {
+	max-width: 72ch;
+}
+.prose h2 {
+	margin: 56px 0 16px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid var(--line);
+	color: var(--ink);
+	font-size: 23px;
+	line-height: 1.35;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+}
+.prose h3 {
+	margin: 36px 0 10px;
+	color: var(--ink);
+	font-size: 18px;
+	line-height: 1.4;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+.prose ul {
+	padding: 0;
+	list-style: none;
+}
+.prose ul > li {
+	position: relative;
+	margin: 0 0 8px;
+	padding-left: 18px;
+}
+.prose ul > li::before {
+	content: '';
+	position: absolute;
+	left: 2px;
+	top: 0.9em;
+	width: 6px;
+	height: 1px;
+	background: var(--faint);
+}
+.prose ol {
+	padding-left: 1.4em;
+}
+.prose ol > li {
+	margin: 0 0 8px;
+	padding-left: 2px;
+}
+.prose ol > li::marker {
+	color: var(--muted);
+	font-variant-numeric: tabular-nums;
+}
+.prose strong {
+	color: var(--ink);
+	font-weight: 600;
+}
+.prose em {
+	color: var(--ink);
+}
 .prose blockquote {
-	margin: 0 0 1.15rem;
-}
-.prose li + li {
-	margin-top: 0.25rem;
-}
-.prose img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 6px;
-}
-.prose hr {
-	border: none;
-	border-top: 1px solid var(--line);
-	margin: 2.5rem 0;
-}
-.prose blockquote {
-	padding: 0.1rem 0 0.1rem 1rem;
-	border-left: 3px solid var(--quote);
+	margin-left: 0;
+	padding: 2px 0 2px 18px;
+	border-left: 2px solid var(--accent);
 	color: var(--muted);
 }
 .prose blockquote p:last-child {
 	margin-bottom: 0;
 }
+.prose hr {
+	border: none;
+	border-top: 1px solid var(--line);
+	margin: 48px 0;
+}
+.prose img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: 28px 0;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: var(--paper);
+}
 
 code,
 pre {
 	font-family: var(--font-mono);
-	font-size: 0.875em;
+	font-size: 0.86em;
 }
 :not(pre) > code {
-	padding: 0.1em 0.35em;
-	background: var(--code-bg);
+	padding: 0.12em 0.4em;
+	color: var(--ink);
+	background: var(--accent-soft);
 	border-radius: 4px;
 }
 pre {
-	padding: 1rem 1.1rem;
-	border-radius: 8px;
-	overflow-x: auto;
-	line-height: 1.55;
+	padding: 16px 18px;
 	border: 1px solid var(--line);
-}
-
-/* Shiki dual theme: light colors inline, dark via CSS variables */
-@media (prefers-color-scheme: dark) {
-	.astro-code,
-	.astro-code span {
-		color: var(--shiki-dark) !important;
-		background-color: var(--shiki-dark-bg) !important;
-	}
+	border-radius: 6px;
+	overflow-x: auto;
+	line-height: 1.6;
+	background: var(--paper) !important;
 }
 
 .prose table {
-	width: 100%;
-	border-collapse: collapse;
-	font-size: 0.925rem;
 	display: block;
+	width: 100%;
 	overflow-x: auto;
+	border-collapse: collapse;
+	font-size: 14.5px;
 }
 .prose th,
 .prose td {
-	border: 1px solid var(--line);
-	padding: 0.4rem 0.7rem;
+	padding: 7px 12px;
+	border-bottom: 1px solid var(--line);
 	text-align: left;
 }
 .prose th {
-	background: var(--code-bg);
-	color: var(--fg);
+	color: var(--ink);
+	font-weight: 600;
+	border-bottom-color: var(--faint);
 }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
 	body {
-		font-size: 16px;
+		font-size: 15px;
 	}
 	main {
-		padding-top: 1.75rem;
+		padding: 44px 20px 24px;
+	}
+	h1 {
+		font-size: 31px;
+	}
+	.lead {
+		font-size: 15.5px;
+		padding-left: 14px;
+	}
+	.section {
+		margin-top: 56px;
+	}
+	.prose {
+		font-size: 15.5px;
+	}
+	.prose h2 {
+		font-size: 20px;
+	}
+}
+
+@media print {
+	body {
+		background: #fff;
+		color: #000;
+		font-size: 11pt;
+	}
+	.topnav,
+	footer {
+		display: none;
+	}
+	main {
+		max-width: none;
+		margin: 0;
+		padding: 0;
+	}
+	a {
+		color: #000;
 	}
 }

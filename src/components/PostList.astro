@@ -15,12 +15,10 @@ const { posts } = Astro.props;
 	<ul class="post-list">
 		{posts.map((post) => (
 			<li>
-				<FormattedDate date={post.data.pubDate} />
-				<div>
-					<a href={postUrl(post)}>{post.data.title}</a>
-					{post.data.draft && <span class="draft">초안</span>}
-					<p>{post.data.description}</p>
-				</div>
+				<span class="when"><FormattedDate date={post.data.pubDate} /></span>
+				<a class="title" href={postUrl(post)}>{post.data.title}</a>
+				{post.data.draft && <span class="draft">초안</span>}
+				<p>{post.data.description}</p>
 			</li>
 		))}
 	</ul>
@@ -28,54 +26,67 @@ const { posts } = Astro.props;
 
 <style>
 	.post-list {
-		list-style: none;
 		margin: 0;
 		padding: 0;
+		list-style: none;
 	}
-	.post-list li {
-		display: grid;
-		grid-template-columns: 6.5rem 1fr;
-		gap: 1rem;
-		padding: 0.9rem 0;
-		border-bottom: 1px solid var(--line);
+	li {
+		position: relative;
+		margin: 0 0 26px;
+		padding-left: var(--date-col);
 	}
-	.post-list li:last-child {
-		border-bottom: none;
-	}
-	time {
-		color: var(--muted);
-		font-variant-numeric: tabular-nums;
-		font-size: 0.9rem;
-		padding-top: 0.15rem;
-	}
-	a {
+	.when {
+		position: absolute;
+		left: 0;
+		top: 0.15em;
+		width: calc(var(--date-col) - 1rem);
+		color: var(--accent);
+		font-size: 13.5px;
 		font-weight: 600;
-		color: var(--fg);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: -0.005em;
+		white-space: nowrap;
+	}
+	.title {
+		color: var(--ink);
+		font-weight: 600;
+		font-size: 16px;
+	}
+	.title:hover {
+		color: var(--accent);
 		text-decoration: none;
 	}
-	a:hover {
-		color: var(--accent);
-	}
 	p {
-		margin: 0.2rem 0 0;
+		max-width: 70ch;
+		margin: 4px 0 0;
 		color: var(--muted);
-		font-size: 0.925rem;
+		font-size: 14.5px;
+		line-height: 1.7;
 	}
 	.draft {
-		margin-left: 0.4rem;
-		font-size: 0.75rem;
-		padding: 0.05rem 0.4rem;
+		margin-left: 6px;
+		padding: 1px 6px;
 		border-radius: 4px;
-		background: var(--warn-bg);
-		color: var(--warn-fg);
+		background: var(--accent-soft);
+		color: var(--accent);
+		font-size: 11.5px;
+		font-weight: 600;
+		vertical-align: 2px;
 	}
 	.empty {
 		color: var(--muted);
 	}
-	@media (max-width: 560px) {
-		.post-list li {
-			grid-template-columns: 1fr;
-			gap: 0.15rem;
+	@media (max-width: 640px) {
+		li {
+			padding-left: 0;
+			margin-bottom: 22px;
+		}
+		.when {
+			position: static;
+			display: block;
+			width: auto;
+			margin-bottom: 1px;
+			font-size: 12.5px;
 		}
 	}
 </style>

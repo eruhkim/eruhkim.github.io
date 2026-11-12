@@ -10,37 +10,45 @@ const tags = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 
 
 <Base title="태그" description="태그별 글 목록">
 	<h1>태그</h1>
-	{tags.length === 0 ? <p>아직 태그가 없습니다.</p> : (
+	<h2 class="section">전체 태그</h2>
+	{tags.length === 0 ? <p class="empty">아직 태그가 없습니다.</p> : (
 		<ul>
 			{tags.map(([tag, n]) => (
-				<li><a href={tagUrl(tag)}>#{tag}</a> <span>{n}</span></li>
+				<li><a href={tagUrl(tag)}>#{tag}</a><span>{n}</span></li>
 			))}
 		</ul>
 	)}
 </Base>
 
 <style>
-	h1 {
-		font-size: 1.5rem;
-		margin: 0 0 1.5rem;
-	}
 	ul {
-		list-style: none;
-		padding: 0;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.6rem 1.25rem;
+		gap: 10px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 6px 12px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--paper);
+		font-size: 14px;
 	}
 	a {
-		color: var(--fg);
-		text-decoration: none;
-		font-weight: 600;
-	}
-	a:hover {
-		color: var(--accent);
+		color: var(--ink);
+		font-weight: 500;
 	}
 	span {
+		color: var(--faint);
+		font-size: 12.5px;
+		font-variant-numeric: tabular-nums;
+	}
+	.empty {
 		color: var(--muted);
-		font-size: 0.85rem;
 	}
 </style>

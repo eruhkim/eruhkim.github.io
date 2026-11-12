@@ -8,13 +8,8 @@ const posts = await getPosts();
 ---
 
 <Base title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<p class="intro">{SITE_DESCRIPTION}</p>
+	<h1>{SITE_TITLE}</h1>
+	<p class="lead">{SITE_DESCRIPTION}</p>
+	<h2 class="section">글</h2>
 	<PostList posts={posts} />
 </Base>
-
-<style>
-	.intro {
-		color: var(--muted);
-		margin: 0 0 2rem;
-	}
-</style>
