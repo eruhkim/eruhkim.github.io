@@ -1,0 +1,10 @@
+---
+interface Props {
+	date: Date;
+}
+const { date } = Astro.props;
+// yyyy-MM-dd in KST so the date never shifts with the build machine's timezone
+const text = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(date);
+---
+
+<time datetime={date.toISOString()}>{text}</time>

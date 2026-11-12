@@ -1,0 +1,60 @@
+---
+import { LINKS, SITE_TITLE } from '../consts';
+
+const path = Astro.url.pathname;
+const nav = [
+	{ href: '/', label: '글', active: path === '/' || path.startsWith('/posts/') },
+	{ href: '/tags/', label: '태그', active: path.startsWith('/tags/') },
+	{ href: '/about/', label: '소개', active: path.startsWith('/about/') },
+];
+---
+
+<header class="site-header">
+	<div class="wrap">
+		<a class="brand" href="/">{SITE_TITLE}</a>
+		<nav aria-label="주요 메뉴">
+			{nav.map((item) => (
+				<a href={item.href} aria-current={item.active ? 'page' : undefined}>{item.label}</a>
+			))}
+			<a href={LINKS.home} class="ext">eruhkim.net</a>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		border-bottom: 1px solid var(--line);
+	}
+	.wrap {
+		max-width: var(--max);
+		margin: 0 auto;
+		padding: 1.1rem 1rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.5rem;
+		align-items: baseline;
+		justify-content: space-between;
+	}
+	.brand {
+		font-weight: 700;
+		color: var(--fg);
+		text-decoration: none;
+		font-size: 1.05rem;
+	}
+	nav {
+		display: flex;
+		gap: 1.1rem;
+		font-size: 0.95rem;
+	}
+	nav a {
+		color: var(--muted);
+		text-decoration: none;
+	}
+	nav a:hover,
+	nav a[aria-current='page'] {
+		color: var(--fg);
+	}
+	nav a[aria-current='page'] {
+		font-weight: 600;
+	}
+</style>

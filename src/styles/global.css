@@ -1,0 +1,169 @@
+:root {
+	--max: 46rem;
+	--bg: #ffffff;
+	--fg: #1b1f24;
+	--text: #2b3138;
+	--muted: #6a737d;
+	--line: #e6e8eb;
+	--accent: #1f4fd8;
+	--code-bg: #f4f5f7;
+	--quote: #d0d7de;
+	--warn-bg: #fff4d6;
+	--warn-fg: #7a5200;
+	--font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR',
+		'Malgun Gothic', system-ui, sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'D2Coding', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #0f1216;
+		--fg: #eef1f4;
+		--text: #d2d7dd;
+		--muted: #8b949e;
+		--line: #262b31;
+		--accent: #7aa2ff;
+		--code-bg: #171b21;
+		--quote: #3a414a;
+		--warn-bg: #3a2f12;
+		--warn-fg: #f2cc60;
+	}
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: var(--font-sans);
+	font-size: 17px;
+	line-height: 1.75;
+	overflow-wrap: break-word;
+}
+
+main {
+	max-width: var(--max);
+	margin: 0 auto;
+	padding: 2.5rem 1rem 0;
+}
+
+a {
+	color: var(--accent);
+}
+
+h1,
+h2,
+h3,
+h4 {
+	color: var(--fg);
+	line-height: 1.4;
+	word-break: keep-all;
+}
+
+/* Post body */
+.prose h1 {
+	font-size: 1.6rem;
+	margin: 0 0 1.25rem;
+}
+.prose h2 {
+	font-size: 1.35rem;
+	margin: 2.5rem 0 0.75rem;
+	padding-bottom: 0.3rem;
+	border-bottom: 1px solid var(--line);
+}
+.prose h3 {
+	font-size: 1.12rem;
+	margin: 2rem 0 0.5rem;
+}
+.prose p,
+.prose ul,
+.prose ol,
+.prose table,
+.prose pre,
+.prose blockquote {
+	margin: 0 0 1.15rem;
+}
+.prose li + li {
+	margin-top: 0.25rem;
+}
+.prose img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 6px;
+}
+.prose hr {
+	border: none;
+	border-top: 1px solid var(--line);
+	margin: 2.5rem 0;
+}
+.prose blockquote {
+	padding: 0.1rem 0 0.1rem 1rem;
+	border-left: 3px solid var(--quote);
+	color: var(--muted);
+}
+.prose blockquote p:last-child {
+	margin-bottom: 0;
+}
+
+code,
+pre {
+	font-family: var(--font-mono);
+	font-size: 0.875em;
+}
+:not(pre) > code {
+	padding: 0.1em 0.35em;
+	background: var(--code-bg);
+	border-radius: 4px;
+}
+pre {
+	padding: 1rem 1.1rem;
+	border-radius: 8px;
+	overflow-x: auto;
+	line-height: 1.55;
+	border: 1px solid var(--line);
+}
+
+/* Shiki dual theme: light colors inline, dark via CSS variables */
+@media (prefers-color-scheme: dark) {
+	.astro-code,
+	.astro-code span {
+		color: var(--shiki-dark) !important;
+		background-color: var(--shiki-dark-bg) !important;
+	}
+}
+
+.prose table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.925rem;
+	display: block;
+	overflow-x: auto;
+}
+.prose th,
+.prose td {
+	border: 1px solid var(--line);
+	padding: 0.4rem 0.7rem;
+	text-align: left;
+}
+.prose th {
+	background: var(--code-bg);
+	color: var(--fg);
+}
+
+@media (max-width: 560px) {
+	body {
+		font-size: 16px;
+	}
+	main {
+		padding-top: 1.75rem;
+	}
+}

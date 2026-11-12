@@ -1,0 +1,20 @@
+---
+import PostList from '../components/PostList.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import Base from '../layouts/Base.astro';
+import { getPosts } from '../lib/posts';
+
+const posts = await getPosts();
+---
+
+<Base title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<p class="intro">{SITE_DESCRIPTION}</p>
+	<PostList posts={posts} />
+</Base>
+
+<style>
+	.intro {
+		color: var(--muted);
+		margin: 0 0 2rem;
+	}
+</style>

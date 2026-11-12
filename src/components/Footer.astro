@@ -1,0 +1,41 @@
+---
+import { AUTHOR, LINKS } from '../consts';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="wrap">
+		<span>© {year} {AUTHOR}</span>
+		<span class="links">
+			<a href={LINKS.home}>eruhkim.net</a>
+			<a href={LINKS.daily}>일상 블로그</a>
+			<a href={LINKS.github}>GitHub</a>
+			<a href="/rss.xml">RSS</a>
+		</span>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		border-top: 1px solid var(--line);
+		margin-top: 4rem;
+		color: var(--muted);
+		font-size: 0.875rem;
+	}
+	.wrap {
+		max-width: var(--max);
+		margin: 0 auto;
+		padding: 1.5rem 1rem 3rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1rem;
+		justify-content: space-between;
+	}
+	.links {
+		display: flex;
+		gap: 1rem;
+	}
+	a {
+		color: inherit;
+	}
+</style>

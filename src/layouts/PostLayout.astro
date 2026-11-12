@@ -1,0 +1,78 @@
+---
+import FormattedDate from '../components/FormattedDate.astro';
+import type { Post } from '../lib/posts';
+import { tagUrl } from '../lib/posts';
+import Base from './Base.astro';
+
+type Props = Post['data'];
+const { title, description, pubDate, updatedDate, tags, draft } = Astro.props;
+---
+
+<Base title={title} description={description} type="article">
+	<article>
+		<header class="post-head">
+			<h1>{title}</h1>
+			<p class="meta">
+				<FormattedDate date={pubDate} />
+				{updatedDate && <span>· 수정 <FormattedDate date={updatedDate} /></span>}
+				{draft && <span class="draft">초안</span>}
+			</p>
+			{tags.length > 0 && (
+				<p class="tags">
+					{tags.map((tag) => <a href={tagUrl(tag)}>#{tag}</a>)}
+				</p>
+			)}
+		</header>
+		<div class="prose">
+			<slot />
+		</div>
+	</article>
+	<p class="back"><a href="/">← 글 목록</a></p>
+</Base>
+
+<style>
+	.post-head {
+		margin-bottom: 2.25rem;
+	}
+	h1 {
+		font-size: 1.85rem;
+		line-height: 1.35;
+		margin: 0 0 0.6rem;
+		word-break: keep-all;
+	}
+	.meta {
+		color: var(--muted);
+		font-size: 0.9rem;
+		margin: 0;
+		display: flex;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+		font-variant-numeric: tabular-nums;
+	}
+	.tags {
+		margin: 0.5rem 0 0;
+		display: flex;
+		gap: 0.6rem;
+		flex-wrap: wrap;
+		font-size: 0.875rem;
+	}
+	.tags a {
+		color: var(--accent);
+		text-decoration: none;
+	}
+	.draft {
+		font-size: 0.75rem;
+		padding: 0.05rem 0.4rem;
+		border-radius: 4px;
+		background: var(--warn-bg);
+		color: var(--warn-fg);
+	}
+	.back {
+		margin-top: 3rem;
+		font-size: 0.925rem;
+	}
+	.back a {
+		color: var(--muted);
+		text-decoration: none;
+	}
+</style>
