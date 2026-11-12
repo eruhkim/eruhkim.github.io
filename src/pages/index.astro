@@ -1,5 +1,6 @@
 ---
 import PostList from '../components/PostList.astro';
+import TagList from '../components/TagList.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import Base from '../layouts/Base.astro';
 import { getPosts } from '../lib/posts';
@@ -9,7 +10,16 @@ const posts = await getPosts();
 
 <Base title={SITE_TITLE} description={SITE_DESCRIPTION}>
 	<h1>{SITE_TITLE}</h1>
-	<p class="lead">{SITE_DESCRIPTION}</p>
+	<p class="lead">{SITE_DESCRIPTION} <a href="/about/">블로그 소개 →</a></p>
 	<h2 class="section">글</h2>
 	<PostList posts={posts} />
+	<h2 class="section">태그</h2>
+	<TagList posts={posts} />
 </Base>
+
+<style>
+	.lead a {
+		white-space: nowrap;
+		font-size: 14.5px;
+	}
+</style>

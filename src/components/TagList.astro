@@ -1,0 +1,54 @@
+---
+import type { Post } from '../lib/posts';
+import { tagUrl } from '../lib/posts';
+
+interface Props {
+	posts: Post[];
+}
+const counts = new Map<string, number>();
+for (const post of Astro.props.posts) for (const tag of post.data.tags) counts.set(tag, (counts.get(tag) ?? 0) + 1);
+const tags = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ko'));
+---
+
+{tags.length === 0 ? (
+	<p class="empty">아직 태그가 없습니다.</p>
+) : (
+	<ul>
+		{tags.map(([tag, n]) => (
+			<li><a href={tagUrl(tag)}>#{tag}</a><span>{n}</span></li>
+		))}
+	</ul>
+)}
+
+<style>
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 6px 12px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--paper);
+		font-size: 14px;
+	}
+	a {
+		color: var(--ink);
+		font-weight: 500;
+	}
+	span {
+		color: var(--faint);
+		font-size: 12.5px;
+		font-variant-numeric: tabular-nums;
+	}
+	.empty {
+		color: var(--muted);
+	}
+</style>

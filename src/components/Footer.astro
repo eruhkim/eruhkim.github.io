@@ -4,7 +4,14 @@ const year = new Date().getFullYear();
 ---
 
 <footer>
-	Copyright © 1996–{year} Hojin Kim · <a href="/rss.xml">RSS</a> · <a href={LINKS.github}>GitHub</a>
+	<nav class="sub" aria-label="블로그 메뉴">
+		<a href="/">글 목록</a>
+		<a href="/tags/">태그</a>
+		<a href="/about/">소개</a>
+		<a href="/rss.xml">RSS</a>
+		<a href={LINKS.github}>GitHub</a>
+	</nav>
+	Copyright © 1996–{year} Hojin Kim
 </footer>
 
 <style>
@@ -17,10 +24,19 @@ const year = new Date().getFullYear();
 		font-size: 12.5px;
 		text-align: center;
 	}
+	.sub {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 6px 18px;
+		margin-bottom: 10px;
+		font-size: 13px;
+	}
 	a {
-		color: inherit;
+		color: var(--muted);
 	}
 	a:hover {
-		color: var(--muted);
+		color: var(--accent);
+		text-decoration: none;
 	}
 </style>

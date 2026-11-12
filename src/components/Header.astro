@@ -1,13 +1,13 @@
 ---
 import { LINKS } from '../consts';
 
-const path = Astro.url.pathname;
+// Same menu as eruhkim.net; every blog page sits under Tech Blog
 const nav = [
-	{ href: '/', label: '기술 노트', active: path === '/' || path.startsWith('/posts/') },
-	{ href: '/tags/', label: '태그', active: path.startsWith('/tags/') },
-	{ href: '/about/', label: '소개', active: path.startsWith('/about/') },
 	{ href: LINKS.home, label: 'CV', active: false },
-	{ href: LINKS.daily, label: '일상 블로그', active: false },
+	{ href: `${LINKS.home}ko/`, label: '한국어 소개', active: false },
+	{ href: `${LINKS.home}koreanedgewrite/`, label: 'Korean EdgeWrite', active: false },
+	{ href: '/', label: 'Tech Blog', active: true },
+	{ href: LINKS.daily, label: 'Daily Blog', active: false },
 ];
 ---
 
