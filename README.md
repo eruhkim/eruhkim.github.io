@@ -1,6 +1,6 @@
 # eruhkim.github.io
 
-김호진의 기술 노트. [Astro](https://astro.build) 정적 블로그, GitHub Actions로 GitHub Pages에 배포.
+Tech Notes by Hojin Kim. [Astro](https://astro.build) 정적 블로그, GitHub Actions로 GitHub Pages에 배포.
 
 ## 글 쓰기
 
