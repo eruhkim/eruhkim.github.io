@@ -5,17 +5,17 @@ pubDate: 2026-11-09
 tags: [aws, elastic-beanstalk, cloudwatch, ssm]
 ---
 
-Elastic Beanstalk(EB) 환경의 EC2 인스턴스는 기본으로 메모리와 디스크 사용률을 CloudWatch에 보내지 않습니다. 이 둘을 알람으로 보고 싶어서 CloudWatch 에이전트를 붙였습니다. 앱마다 `.ebextensions`를 넣고 재배포하기는 번거로워서, **SSM State Manager association** 하나로 EB 인스턴스 전체에 에이전트를 설치하고 설정하는 방식을 골랐습니다.
+Elastic Beanstalk(EB) 환경의 EC2 인스턴스는 기본으로 메모리와 디스크 사용률을 CloudWatch에 보내지 않는다. 이 둘을 알람으로 보고 싶어서 CloudWatch 에이전트를 붙였다. 앱마다 `.ebextensions`를 넣고 재배포하기는 번거로워서, **SSM State Manager association** 하나로 EB 인스턴스 전체에 에이전트를 설치하고 설정하는 방식을 골랐다.
 
-- 대상: `elasticbeanstalk:environment-name` 태그가 있는 인스턴스. 새로 뜨는 인스턴스에도 자동으로 적용됩니다.
+- 대상: `elasticbeanstalk:environment-name` 태그가 있는 인스턴스. 새로 뜨는 인스턴스에도 자동으로 적용된다.
 - 설정: SSM 파라미터에 넣은 에이전트 JSON
 - 주기: 30분마다 다시 실행해서 설정이 빠졌으면 되살림
 
-여기서 두 번 크게 막혔습니다.
+여기서 두 번 크게 막혔다.
 
 ## 에이전트 설정
 
-모으는 지표는 `mem_used_percent`와 루트 볼륨 `disk used_percent` 두 개입니다. 알람은 오토스케일링 그룹 단위로만 볼 거라서, 인스턴스별 원본은 버리고 `AutoScalingGroupName`으로 집계한 값만 남깁니다. 인스턴스가 바뀔 때마다 지표가 새로 생기는 것도 막을 수 있습니다.
+모으는 지표는 `mem_used_percent`와 루트 볼륨 `disk used_percent` 두 개다. 알람은 오토스케일링 그룹 단위로만 볼 거라서, 인스턴스별 원본은 버리고 `AutoScalingGroupName`으로 집계한 값만 남긴다. 인스턴스가 바뀔 때마다 지표가 새로 생기는 것도 막을 수 있다.
 
 ```json
 {
@@ -35,21 +35,21 @@ Elastic Beanstalk(EB) 환경의 EC2 인스턴스는 기본으로 메모리와 �
 }
 ```
 
-SSM 파라미터 이름은 `AmazonCloudWatch-`로 시작하게 지었습니다. AWS 관리형 정책 `CloudWatchAgentServerPolicy`가 이 접두사의 파라미터만 읽을 수 있게 해 주기 때문입니다. EB 인스턴스 역할에는 이 정책과 `AmazonSSMManagedInstanceCore`를 붙입니다.
+SSM 파라미터 이름은 `AmazonCloudWatch-`로 시작하게 지었다. AWS 관리형 정책 `CloudWatchAgentServerPolicy`가 이 접두사의 파라미터만 읽을 수 있게 해 주기 때문이다. EB 인스턴스 역할에는 이 정책과 `AmazonSSMManagedInstanceCore`를 붙인다.
 
 ## 문제 1: 설정을 넣자 EB 로그가 CloudWatch로 안 간다
 
-처음에는 문서에 나온 그대로 했습니다.
+처음에는 문서에 나온 그대로 했다.
 
 ```bash
 amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-myapp
 ```
 
-지표는 잘 들어왔습니다. 그런데 association이 실행된 인스턴스 전부에서 EB 환경의 로그 그룹(`/aws/elasticbeanstalk/<env>/var/log/...`)에 새 로그가 들어오지 않았습니다. 고칠 때까지 약 20분 동안 로그가 비었습니다.
+지표는 잘 들어왔다. 그런데 association이 실행된 인스턴스 전부에서 EB 환경의 로그 그룹(`/aws/elasticbeanstalk/<env>/var/log/...`)에 새 로그가 들어오지 않았다. 고칠 때까지 약 20분 동안 로그가 비었다.
 
 ### 원인: EB 로그 스트리밍도 같은 에이전트를 쓴다
 
-EB 환경에서 **인스턴스 로그 스트리밍**을 켜 두면, EB는 따로 프로그램을 띄우지 않고 **같은 CloudWatch 에이전트**에 로그 수집 설정을 넣습니다. 인스턴스 안을 보면 이렇습니다.
+EB 환경에서 **인스턴스 로그 스트리밍**을 켜 두면, EB는 따로 프로그램을 띄우지 않고 **같은 CloudWatch 에이전트**에 로그 수집 설정을 넣는다. 인스턴스 안을 보면 이렇다.
 
 ```text
 /opt/aws/amazon-cloudwatch-agent/etc/beanstalk.json                    ← EB가 만든 로그 설정 원본
@@ -57,11 +57,11 @@ EB 환경에서 **인스턴스 로그 스트리밍**을 켜 두면, EB는 따로
     file_beanstalk.json                                                 ← 에이전트가 실제로 읽는 설정
 ```
 
-에이전트는 `amazon-cloudwatch-agent.d/` 안의 설정 파일을 모두 합쳐서 씁니다. 그런데 **`fetch-config`는 이 디렉터리를 새 설정 하나로 통째로 바꿉니다.** 그래서 제 설정을 `fetch-config`로 넣는 순간 EB의 `file_beanstalk.json`이 지워졌고, 에이전트는 지표만 보내고 로그는 보내지 않게 됐습니다.
+에이전트는 `amazon-cloudwatch-agent.d/` 안의 설정 파일을 모두 합쳐서 쓴다. 그런데 **`fetch-config`는 이 디렉터리를 새 설정 하나로 통째로 바꾼다.** 그래서 내 설정을 `fetch-config`로 넣는 순간 EB의 `file_beanstalk.json`이 지워졌고, 에이전트는 지표만 보내고 로그는 보내지 않게 됐다.
 
 ### 해결: EB 설정을 먼저 넣고, 내 설정은 append-config로 더한다
 
-`append-config`는 기존 설정을 지우지 않고 파일을 하나 더 추가합니다. 그래서 순서를 이렇게 바꿨습니다.
+`append-config`는 기존 설정을 지우지 않고 파일을 하나 더 추가한다. 그래서 순서를 이렇게 바꿨다.
 
 ```bash
 A=/opt/aws/amazon-cloudwatch-agent
@@ -77,7 +77,7 @@ else
 fi
 ```
 
-이렇게 하면 `amazon-cloudwatch-agent.d/`에 `file_beanstalk.json`과 `ssm_AmazonCloudWatch-myapp` 두 파일이 같이 남습니다. 반대로, EB도 배포하거나 설정을 바꿀 때 `beanstalk.json`으로 `fetch-config`를 다시 할 수 있고, 그러면 이번에는 **제 설정이 빠집니다.** 그래서 association을 30분마다 다시 돌려서, 둘 중 하나라도 빠졌으면 되살리게 했습니다. 이미 둘 다 있고 파라미터 내용도 같으면 에이전트를 건드리지 않습니다.
+이렇게 하면 `amazon-cloudwatch-agent.d/`에 `file_beanstalk.json`과 `ssm_AmazonCloudWatch-myapp` 두 파일이 같이 남는다. 반대로, EB도 배포하거나 설정을 바꿀 때 `beanstalk.json`으로 `fetch-config`를 다시 할 수 있고, 그러면 이번에는 **내 설정이 빠진다.** 그래서 association을 30분마다 다시 돌려서, 둘 중 하나라도 빠졌으면 되살리게 했다. 이미 둘 다 있고 파라미터 내용도 같으면 에이전트를 건드리지 않는다.
 
 ```bash
 D=$A/etc/amazon-cloudwatch-agent.d
@@ -96,27 +96,27 @@ fi
 
 ## 문제 2: 이번에는 새 인스턴스의 배포가 가끔 실패한다
 
-로그 문제를 고치고 며칠 동안은 잘 돌았습니다. 그런데 일주일 사이에 EB 배포가 여섯 번 실패했습니다. 여러 앱에 걸쳐 있었고, 이벤트를 보면 모두 같은 단계에서 실패했습니다. **로그 스트리밍을 설정하는 단계**("configure log streaming")였습니다.
+로그 문제를 고치고 며칠 동안은 잘 돌았다. 그런데 일주일 사이에 EB 배포가 여섯 번 실패했다. 여러 앱에 걸쳐 있었고, 이벤트를 보면 모두 같은 단계에서 실패했다. **로그 스트리밍을 설정하는 단계**("configure log streaming")였다.
 
-실패한 인스턴스들에는 공통점이 있었습니다.
+실패한 인스턴스들에는 공통점이 있었다.
 
-- 모두 **막 새로 뜬 인스턴스**였습니다(스케일 아웃, 롤링 배포의 새 배치, 교체된 인스턴스).
-- SSM association의 실행 기록을 보면, 그 인스턴스에서 association이 **처음 실행된 시각이 EB의 로그 스트리밍 설정 단계와 같은 초**였습니다.
+- 모두 **막 새로 뜬 인스턴스**였다(스케일 아웃, 롤링 배포의 새 배치, 교체된 인스턴스).
+- SSM association의 실행 기록을 보면, 그 인스턴스에서 association이 **처음 실행된 시각이 EB의 로그 스트리밍 설정 단계와 같은 초**였다.
 
 ### 원인: 두 쪽이 같은 순간에 에이전트를 재시작했다
 
-State Manager association은 새 인스턴스가 SSM에 등록되자마자 한 번 실행됩니다. 그런데 EB도 새 인스턴스에서 첫 배포를 하면서 로그 스트리밍을 설정하고, 이때 에이전트를 `fetch-config` 해서 재시작합니다. 인스턴스가 뜨고 SSM 에이전트가 등록되는 시점과 EB 첫 배포가 로그 설정에 이르는 시점이 몇 초 차이밖에 나지 않아서, 두 쪽의 `amazon-cloudwatch-agent-ctl`이 겹쳤습니다. 겹치면 EB의 로그 스트리밍 설정 단계가 실패하고, EB는 배포 전체를 실패로 처리합니다.
+State Manager association은 새 인스턴스가 SSM에 등록되자마자 한 번 실행된다. 그런데 EB도 새 인스턴스에서 첫 배포를 하면서 로그 스트리밍을 설정하고, 이때 에이전트를 `fetch-config` 해서 재시작한다. 인스턴스가 뜨고 SSM 에이전트가 등록되는 시점과 EB 첫 배포가 로그 설정에 이르는 시점이 몇 초 차이밖에 나지 않아서, 두 쪽의 `amazon-cloudwatch-agent-ctl`이 겹쳤다. 겹치면 EB의 로그 스트리밍 설정 단계가 실패하고, EB는 배포 전체를 실패로 처리한다.
 
-이미 떠 있던 인스턴스에서는 30분마다 돌아도 문제가 없었습니다. 그때는 EB가 아무것도 하지 않고 있으니까요.
+이미 떠 있던 인스턴스에서는 30분마다 돌아도 문제가 없었다. 그때는 EB가 아무것도 하지 않고 있기 때문이다.
 
 ### 해결: EB가 쉬고 있을 때만 에이전트를 건드린다
 
-association 스크립트 앞에, **EB가 배포 중이 아닐 때까지 기다리는** 부분을 넣었습니다. EB 인스턴스에서 배포 중인지는 두 가지로 판단합니다.
+association 스크립트 앞에, **EB가 배포 중이 아닐 때까지 기다리는** 부분을 넣었다. EB 인스턴스에서 배포 중인지는 두 가지로 판단한다.
 
-- `/var/app/current`가 있는가: 새 인스턴스는 첫 배포가 끝나야 이 디렉터리가 생깁니다.
-- `/opt/elasticbeanstalk/bin/platform-engine` 프로세스가 없는가: EB의 배포와 설정 변경은 이 프로세스가 실행합니다.
+- `/var/app/current`가 있는가: 새 인스턴스는 첫 배포가 끝나야 이 디렉터리가 생긴다.
+- `/opt/elasticbeanstalk/bin/platform-engine` 프로세스가 없는가: EB의 배포와 설정 변경은 이 프로세스가 실행한다.
 
-둘 다 만족하는 상태가 **10초(5초 간격 3번) 연속** 이어지면 진행합니다. 8분 동안 기다려도 안 되면 이번 실행은 건너뛰고, 30분 뒤 다음 실행에 맡깁니다.
+둘 다 만족하는 상태가 **10초(5초 간격 3번) 연속** 이어지면 진행한다. 8분 동안 기다려도 안 되면 이번 실행은 건너뛰고, 30분 뒤 다음 실행에 맡긴다.
 
 ```bash
 if [ -d /opt/elasticbeanstalk ]; then
@@ -134,13 +134,13 @@ if [ -d /opt/elasticbeanstalk ]; then
 fi
 ```
 
-`exit 0`으로 끝내는 건 일부러 그런 겁니다. 건너뛴 걸 실패로 남기면 association 상태가 계속 Failed로 보여서, 진짜 실패와 구분이 안 됩니다.
+`exit 0`으로 끝내는 건 일부러 그런 것이다. 건너뛴 걸 실패로 남기면 association 상태가 계속 Failed로 보여서, 진짜 실패와 구분이 안 된다.
 
-고친 뒤 일부러 앱 하나를 다시 배포해서 확인했습니다. 새 인스턴스에서 association이 시작됐고, 첫 배포가 끝날 때까지 약 40초를 기다렸다가 설정을 적용했습니다. 배포도 실패 없이 끝났습니다.
+고친 뒤 일부러 앱 하나를 다시 배포해서 확인했다. 새 인스턴스에서 association이 시작됐고, 첫 배포가 끝날 때까지 약 40초를 기다렸다가 설정을 적용했다. 배포도 실패 없이 끝났다.
 
 ## 덤: update-association은 이름을 지운다
 
-association 설정을 스크립트로 갱신하다가 하나 더 밟았습니다. `aws ssm update-association`에 `--association-name`을 빼면 **기존 이름이 지워집니다.** 바꾸지 않을 항목은 그대로 두는 게 아니라, 요청에 없는 항목을 비우는 방식입니다. 이름으로 association을 찾는 스크립트라면 다음 실행에서 못 찾고 새로 만들게 됩니다. 갱신할 때는 이름, 대상, 일정을 모두 다시 넘깁니다.
+association 설정을 스크립트로 갱신하다가 하나 더 밟았다. `aws ssm update-association`에 `--association-name`을 빼면 **기존 이름이 지워진다.** 바꾸지 않을 항목은 그대로 두는 게 아니라, 요청에 없는 항목을 비우는 방식이다. 이름으로 association을 찾는 스크립트라면 다음 실행에서 못 찾고 새로 만들게 된다. 갱신할 때는 이름, 대상, 일정을 모두 다시 넘긴다.
 
 ```bash
 aws ssm update-association --association-id "$id" \
@@ -153,7 +153,7 @@ aws ssm update-association --association-id "$id" \
 
 ## 정리
 
-- EB의 인스턴스 로그 스트리밍은 **같은 CloudWatch 에이전트**를 씁니다. EB 인스턴스에서 에이전트 설정을 `fetch-config`로 넣으면 EB 로그 설정이 지워집니다. `beanstalk.json`을 먼저 `fetch-config`하고, 내 설정은 `append-config`로 더합니다.
-- EB도 배포할 때 다시 `fetch-config`를 하므로, 내 설정은 주기적으로 확인해서 되살려야 합니다. 이미 맞으면 재시작하지 않게 합니다.
-- **새 인스턴스에서는 SSM association의 첫 실행과 EB 첫 배포가 겹칩니다.** 같은 에이전트를 동시에 재시작하면 EB 배포가 실패합니다. `/var/app/current`와 `platform-engine` 프로세스로 EB가 쉬고 있는지 보고 나서 건드립니다.
-- `update-association`에는 이름을 포함해 모든 항목을 다시 넘깁니다.
+- EB의 인스턴스 로그 스트리밍은 **같은 CloudWatch 에이전트**를 쓴다. EB 인스턴스에서 에이전트 설정을 `fetch-config`로 넣으면 EB 로그 설정이 지워진다. `beanstalk.json`을 먼저 `fetch-config`하고, 내 설정은 `append-config`로 더한다.
+- EB도 배포할 때 다시 `fetch-config`를 하므로, 내 설정은 주기적으로 확인해서 되살려야 한다. 이미 맞으면 재시작하지 않게 한다.
+- **새 인스턴스에서는 SSM association의 첫 실행과 EB 첫 배포가 겹친다.** 같은 에이전트를 동시에 재시작하면 EB 배포가 실패한다. `/var/app/current`와 `platform-engine` 프로세스로 EB가 쉬고 있는지 보고 나서 건드린다.
+- `update-association`에는 이름을 포함해 모든 항목을 다시 넘긴다.
