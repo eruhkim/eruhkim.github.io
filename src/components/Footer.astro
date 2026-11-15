@@ -1,0 +1,42 @@
+---
+import { LINKS } from '../consts';
+const year = new Date().getFullYear();
+---
+
+<footer>
+	<nav class="sub" aria-label="블로그 메뉴">
+		<a href="/">글 목록</a>
+		<a href="/tags/">태그</a>
+		<a href="/about/">소개</a>
+		<a href="/rss.xml">RSS</a>
+		<a href={LINKS.github}>GitHub</a>
+	</nav>
+	Copyright © 1996–{year} Hojin Kim
+</footer>
+
+<style>
+	footer {
+		max-width: 880px;
+		margin: 40px auto 0;
+		padding: 28px 32px 48px;
+		border-top: 1px solid var(--line);
+		color: var(--faint);
+		font-size: 12.5px;
+		text-align: center;
+	}
+	.sub {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 6px 18px;
+		margin-bottom: 10px;
+		font-size: 13px;
+	}
+	a {
+		color: var(--muted);
+	}
+	a:hover {
+		color: var(--accent);
+		text-decoration: none;
+	}
+</style>

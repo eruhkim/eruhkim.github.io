@@ -1,0 +1,13 @@
+---
+import TagList from '../../components/TagList.astro';
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../lib/posts';
+
+const posts = await getPosts();
+---
+
+<Base title="태그" description="태그별 글 목록">
+	<h1>태그</h1>
+	<h2 class="section">전체 태그</h2>
+	<TagList posts={posts} />
+</Base>

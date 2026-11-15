@@ -1,0 +1,85 @@
+---
+import { LINKS } from '../consts';
+
+// Same menu as eruhkim.net; every blog page sits under Tech Notes
+const nav = [
+	{ href: LINKS.home, label: 'CV', active: false },
+	{ href: `${LINKS.home}ko/`, label: '한국어 소개', active: false },
+	{ href: `${LINKS.home}koreanedgewrite/`, label: 'Korean EdgeWrite', active: false },
+	{ href: '/', label: 'Tech Notes', active: true },
+	{ href: LINKS.daily, label: 'Daily Notes', active: false },
+];
+---
+
+<nav class="topnav" aria-label="주요 메뉴">
+	{nav.map((item) => (
+		<a href={item.href} class:list={{ active: item.active }} aria-current={item.active ? 'page' : undefined}>
+			{item.label}
+		</a>
+	))}
+</nav>
+
+<style>
+	.topnav {
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		display: flex;
+		justify-content: center;
+		gap: 2px;
+		padding: 0 16px;
+		background: rgba(251, 251, 250, 0.86);
+		-webkit-backdrop-filter: saturate(180%) blur(14px);
+		backdrop-filter: saturate(180%) blur(14px);
+		border-bottom: 1px solid var(--line);
+	}
+	a {
+		position: relative;
+		display: block;
+		padding: 15px 14px;
+		color: var(--muted);
+		font-size: 14px;
+		font-weight: 500;
+		letter-spacing: -0.005em;
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+	a:hover {
+		color: var(--ink);
+		text-decoration: none;
+	}
+	a.active {
+		color: var(--ink);
+		font-weight: 600;
+	}
+	a.active::after {
+		content: '';
+		position: absolute;
+		left: 14px;
+		right: 14px;
+		bottom: -1px;
+		height: 2px;
+		border-radius: 2px;
+		background: var(--accent);
+	}
+	@media (max-width: 640px) {
+		.topnav {
+			justify-content: flex-start;
+			overflow-x: auto;
+			white-space: nowrap;
+			scrollbar-width: none;
+		}
+		.topnav::-webkit-scrollbar {
+			display: none;
+		}
+		a {
+			flex: 0 0 auto;
+			padding: 13px 12px;
+			font-size: 13.5px;
+		}
+		a.active::after {
+			left: 12px;
+			right: 12px;
+		}
+	}
+</style>
