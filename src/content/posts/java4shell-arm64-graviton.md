@@ -1,7 +1,7 @@
 ---
 title: Java4Shell(CVE-2026-114938)이 터졌는데 급하지 않았던 이유 – 서버가 전부 Graviton(arm64)이었다
 description: 인증 없이 원격 코드 실행이 가능하다는 JVM 취약점이 공개됐다. 확인해 보니 문제의 코드는 x86-64의 AVX-512 VBMI 전용 경로였고, 서버를 처음부터 Graviton(arm64)으로 만들어 둔 덕분에 영향이 없었다. 확인한 순서와, arm64에서는 오히려 쓰면 안 되는 우회 옵션까지 정리했다.
-pubDate: 2026-11-16
+pubDate: 2026-11-18
 tags: [aws, java, security, graviton, arm64]
 ---
 

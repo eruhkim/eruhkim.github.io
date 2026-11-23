@@ -1,7 +1,7 @@
 ---
 title: 호출 중인 도메인에 Route 53 private zone을 붙였더니 호출이 실패했다 – 레코드 없음 응답도 캐시된다
 description: VPC 안의 호출을 NAT 대신 내부 NLB로 보내려고 private hosted zone을 만들었다. zone 연결과 레코드 생성 사이 몇 초의 공백이 VPC 리졸버에 negative cache로 남아 호출 쪽에서 5xx가 났다.
-pubDate: 2026-11-14
+pubDate: 2026-11-16
 tags: [aws, route53, nlb, dns]
 ---
 

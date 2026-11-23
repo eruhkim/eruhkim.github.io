@@ -1,7 +1,7 @@
 ---
 title: 서버를 줄였더니 Kinesis 레코드 수도 같은 비율로 줄었다 – 유실이 아니라 KPL aggregation
 description: 로그 수집 서버를 한 대 줄이자 Kinesis IncomingRecords가 서버 대수 비율만큼 정확히 떨어졌다. 바이트 수는 그대로였다. KPL이 레코드를 묶어 보내는 방식 때문에 레코드 수는 트래픽이 아니라 서버 수를 따라간다.
-pubDate: 2026-11-03
+pubDate: 2026-11-04
 tags: [aws, kinesis, kpl]
 ---
 

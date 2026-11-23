@@ -1,7 +1,7 @@
 ---
 title: 같은 CSS인데 메뉴 높이가 6px 달랐다 – line-height는 부모에서 온다
 description: 사이트 네 곳에 같은 상단 메뉴 CSS를 붙였는데 Tistory에서만 높이가 48px이었다. 메뉴는 line-height를 정하지 않아 각 사이트 body의 값을 물려받고 있었고, Tistory의 body는 line-height가 normal이었다.
-pubDate: 2026-11-08
+pubDate: 2026-11-09
 tags: [css, tistory]
 ---
 
